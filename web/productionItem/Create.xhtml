@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProductionItemCreateDlg" widgetVar="ProductionItemCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateProductionItemTitle}">
+            <h:form id="ProductionItemCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{productionItemController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateProductionItemLabel_commande}" for="commande" />
+                        <p:selectOneMenu id="commande" value="#{productionItemController.selected.commande}" >
+                            <f:selectItem itemLabel="--SELECT--" itemValue="#{null}"></f:selectItem>
+                            <f:selectItems value="#{commandeController.itemsAvailableSelectOne}"
+                                           var="commandeItem"
+                                           itemValue="#{commandeItem}"/>
+                            <p:ajax process="commande" listener="#{productionItemController.findCommadeItemsByIdCmd()}"  update="commandeItem"></p:ajax>
+
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{bundle.CreateProductionItemLabel_dateProduction}" for="dateProduction" />
+                        <p:calendar id="dateProduction" pattern="MM/dd/yyyy" value="#{productionItemController.selected.dateProduction}" title="#{bundle.EditProductionItemTitle_dateProduction}"  showOn="button"/>
+
+                        <p:outputLabel value="#{bundle.CreateProductionItemLabel_heure}" for="heure" />
+                        <p:selectOneMenu id="heure" value="#{productionItemController.selected.heure}" >
+                            <f:selectItems value="#{heureController.itemsAvailableSelectOne}"
+                                           var="heureItem"
+                                           itemValue="#{heureItem}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{bundle.CreateProductionItemLabel_chain}" for="chain" />
+                        <p:selectOneMenu id="chain" value="#{productionItemController.selected.chain}" >
+                            <f:selectItems value="#{chainController.itemsAvailableSelectOne}"
+                                           var="chainItem"
+                                           itemValue="#{chainItem}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{bundle.CreateProductionItemLabel_produit}" for="commandeItem" />
+                        <p:selectOneMenu id="commandeItem" value="#{productionItemController.commandeItem}" >
+                            <f:selectItem itemLabel="--SELECT--" itemValue="#{null}"></f:selectItem>
+                            <f:selectItems value="#{productionItemController.selected.commande.commandeItems}"
+                                           var="commandeItem"
+                                           itemValue="#{commandeItem}" itemLabel="#{commandeItem.produit.libelle} (#{commandeItem.qteRecu} / #{commandeItem.qte})"
+                                           itemDisabled="#{commandeItem.qteRecu ge commandeItem.qte}"/>
+                            <p:ajax process="commandeItem" listener="#{productionItemController.calcQteRestante()}"  update="qte"></p:ajax>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{bundle.CreateProductionItemLabel_qte}" for="qte" />
+                        <p:inputText id="qte" value="#{productionItemController.selected.qte}" title="#{bundle.CreateProductionItemTitle_qte}" />
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{productionItemController.create}" value="#{bundle.Save}" update="display,:ProductionItemListForm:datalist,:growl" oncomplete="handleSubmit(args,'ProductionItemCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ProductionItemCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

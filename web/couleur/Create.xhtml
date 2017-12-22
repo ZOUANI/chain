@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CouleurCreateDlg" widgetVar="CouleurCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateCouleurTitle}">
+            <h:form id="CouleurCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{couleurController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateCouleurLabel_nom}" for="nom" />
+                        <p:inputText id="nom" value="#{couleurController.selected.nom}" title="#{bundle.CreateCouleurTitle_nom}" />
+                        <p:outputLabel value="#{bundle.CreateCouleurLabel_reference}" for="reference" />
+                        <p:colorPicker id="reference" value="#{couleurController.selected.reference}"  />
+                        <p:outputLabel value="#{bundle.CreateCouleurLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{couleurController.selected.id}" title="#{bundle.CreateCouleurTitle_id}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{couleurController.create}" value="#{bundle.Save}" update="display,:CouleurListForm:datalist,:growl" oncomplete="handleSubmit(args,'CouleurCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CouleurCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

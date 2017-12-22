@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HeureCreateDlg" widgetVar="HeureCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateHeureTitle}">
+            <h:form id="HeureCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{heureController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateHeureLabel_durree}" for="durree" />
+                        <p:inputText id="durree" value="#{heureController.selected.durree}" title="#{bundle.CreateHeureTitle_durree}" />
+                        <p:outputLabel value="#{bundle.CreateHeureLabel_reference}" for="reference" />
+                        <p:inputText id="reference" value="#{heureController.selected.reference}" title="#{bundle.CreateHeureTitle_reference}" />
+                        <p:outputLabel value="#{bundle.CreateHeureLabel_heureDebut}" for="heureDebut" />
+                        <p:inputText id="heureDebut" value="#{heureController.selected.heureDebut}" title="#{bundle.CreateHeureTitle_heureDebut}" />
+                        <p:outputLabel value="#{bundle.CreateHeureLabel_heureFin}" for="heureFin" />
+                        <p:inputText id="heureFin" value="#{heureController.selected.heureFin}" title="#{bundle.CreateHeureTitle_heureFin}" />
+                        <p:outputLabel value="#{bundle.CreateHeureLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{heureController.selected.id}" title="#{bundle.CreateHeureTitle_id}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{heureController.create}" value="#{bundle.Save}" update="display,:HeureListForm:datalist,:growl" oncomplete="handleSubmit(args,'HeureCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="HeureCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ChainEditDlg" widgetVar="ChainEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditChainTitle}">
+            <h:form id="ChainEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{chainController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditChainLabel_reference}" for="reference" />
+                        <p:inputText id="reference" value="#{chainController.selected.reference}" title="#{bundle.EditChainTitle_reference}" />
+                        <p:outputLabel value="#{bundle.EditChainLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{chainController.selected.id}" title="#{bundle.EditChainTitle_id}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{chainController.update}" value="#{bundle.Save}" update="display,:ChainListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ChainEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ChainEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
