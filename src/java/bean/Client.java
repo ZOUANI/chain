@@ -34,7 +34,8 @@ public class Client implements Serializable {
     private boolean supprimer;
     private boolean bloquer;
     private String detailBloquage;
-
+ 
+   
     public boolean isBloquer() {
         return bloquer;
     }
