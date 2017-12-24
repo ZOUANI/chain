@@ -427,7 +427,7 @@ ALTER TABLE `commandeitem`
   ADD CONSTRAINT `FK_COMMANDEITEM_PRODUIT_ID` FOREIGN KEY (`PRODUIT_ID`) REFERENCES `produit` (`ID`);
 
 --
--- Contraintes pour la table `productionitem`
+-- Contraintes pour la table `productionitem`s
 --
 ALTER TABLE `productionitem`
   ADD CONSTRAINT `FK_PRODUCTIONITEM_CHAIN_ID` FOREIGN KEY (`CHAIN_ID`) REFERENCES `chain` (`ID`),

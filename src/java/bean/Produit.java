@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+
 /**
  *
  * @author moulaYounes
@@ -36,7 +37,7 @@ public class Produit implements Serializable {
     private double seuilAlert;
     private boolean modifier;
     private boolean supprimer;
-
+    
     public Produit() {
     }
 
