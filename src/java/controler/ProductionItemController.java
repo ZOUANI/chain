@@ -8,9 +8,6 @@ import bean.ProductionItem;
 import bean.Produit;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
-import controler.util.Message;
-import controler.util.MessageManager;
-import controler.util.SessionUtil;
 import service.ProductionItemFacade;
 
 import java.io.Serializable;
@@ -27,7 +24,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import static org.primefaces.behavior.confirm.ConfirmBehavior.PropertyKeys.message;
+import service.CommandeItemFacade;
 
 @Named("productionItemController")
 @SessionScoped
@@ -36,6 +33,7 @@ public class ProductionItemController implements Serializable {
     @EJB
     private service.ProductionItemFacade ejbFacade;
     private List<ProductionItem> items = null;
+    private List<ProductionItem> myProductionItems = null;
     private ProductionItem selected;
     private @EJB
     service.CommandeItemFacade commandeItemFacade;
@@ -209,4 +207,77 @@ public class ProductionItemController implements Serializable {
 
     }
 
+    public ProductionItemFacade getEjbFacade() {
+        return ejbFacade;
+    }
+
+    public void setEjbFacade(ProductionItemFacade ejbFacade) {
+        this.ejbFacade = ejbFacade;
+    }
+
+    public List<ProductionItem> getMyProductionItems() {
+        return myProductionItems;
+    }
+
+    public void setMyProductionItems(List<ProductionItem> myProductionItems) {
+        this.myProductionItems = myProductionItems;
+    }
+
+    public CommandeItemFacade getCommandeItemFacade() {
+        return commandeItemFacade;
+    }
+
+    public void setCommandeItemFacade(CommandeItemFacade commandeItemFacade) {
+        this.commandeItemFacade = commandeItemFacade;
+    }
+
+    public Commande getCommande() {
+        return commande;
+    }
+
+    public void setCommande(Commande commande) {
+        this.commande = commande;
+    }
+
+    public Heure getHeure() {
+        return heure;
+    }
+
+    public void setHeure(Heure heure) {
+        this.heure = heure;
+    }
+
+    public Chain getChain() {
+        return chain;
+    }
+
+    public void setChain(Chain chain) {
+        this.chain = chain;
+    }
+
+    public Produit getProduit() {
+        return produit;
+    }
+
+    public void setProduit(Produit produit) {
+        this.produit = produit;
+    }
+
+    public Date getDateMin() {
+        return dateMin;
+    }
+
+    public void setDateMin(Date dateMin) {
+        this.dateMin = dateMin;
+    }
+
+    public Date getDateMax() {
+        return dateMax;
+    }
+
+    public void setDateMax(Date dateMax) {
+        this.dateMax = dateMax;
+    }
+    
+    
 }

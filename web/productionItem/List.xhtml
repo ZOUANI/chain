@@ -95,6 +95,7 @@
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{productionItemController.prepareCreate}" update=":ProductionItemCreateForm" oncomplete="PF('ProductionItemCreateDialog').show()"/>
+                            <p:commandButton id="createMultipleButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{productionItemController.prepareCreate}" update=":ProductionItemCreateMultipleForm" oncomplete="PF('ProductionItemCreateMultipleDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":ProductionItemViewForm" oncomplete="PF('ProductionItemViewDialog').show()" disabled="#{empty productionItemController.selected}"/>
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ProductionItemEditForm" oncomplete="PF('ProductionItemEditDialog').show()" disabled="#{empty productionItemController.selected}"/>
                             <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{productionItemController.destroy}" update=":growl,datalist" disabled="#{empty productionItemController.selected}"/>
@@ -104,6 +105,7 @@
             </h:form>
 
             <ui:include src="Create.xhtml"/>
+            <ui:include src="CreateMultiple.xhtml"/>
             <ui:include src="Edit.xhtml"/>
             <ui:include src="View.xhtml"/>
         </ui:define>
