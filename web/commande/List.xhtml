@@ -17,9 +17,9 @@
                     <div class="ui-grid-row">
                         <div class="ui-grid-col-12">
                             <h:form id="FilterForm">
-                                <p:fieldset legend="Criteres de recherche" style="margin-bottom:20px" toggleable="true" toggleSpeed="500">
+                                <p:fieldset legend="Criteres de recherche" style="margin-bottom:15px" toggleable="true" toggleSpeed="200">
 
-                                    <p:panelGrid columns="9">
+                                    <p:panelGrid columns="5">
                                         <p:outputLabel value="#{bundle.DateCommandeMin}" style="display:block;width:60px" for="dateCommandeMin" />
                                         <p:calendar id="dateCommandeMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateCommandeMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
                                         <p:outputLabel value="#{bundle.DateCommandeMax}" style="display:block;width:60px" for="dateCommandeMax" />
@@ -28,8 +28,7 @@
                                         <p:calendar id="dateEcheanceMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
                                         <p:outputLabel value="#{bundle.DateEcheanceMax}" style="display:block;width:85px" for="dateEcheanceMax" />
                                         <p:calendar id="dateEcheanceMax" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMax}" title="#{bundle.DateCommandeMax}"  showOn="button"/>
-                                        <p:commandButton value="Valider" actionListener="#{commandeController.findByCriteres(0)}" update=":CommandeListForm:datalist,:CommandeItemListForm,:growl"  
-                                                         />
+                                        <p:commandButton value="Valider" actionListener="#{commandeController.findByCriteres(0)}" update=":CommandeListForm:datalist,:CommandeItemListForm,:growl"  />                                                       
                                     </p:panelGrid>
                                 </p:fieldset>   
                             </h:form>
@@ -41,7 +40,7 @@
                             <h:form id="CommandeListForm">
                                 <p:panel header="#{bundle.ListCommandeTitle}" style="margin-top: 0">
                                     <p:dataTable id="datalist" value="#{commandeController.items}" var="item"
-                                                 scrollable="true" scrollHeight="170"
+                                                 scrollable="true" scrollHeight="120"
                                                  resizableColumns="true" style="margin-top: 0"
                                                  >
                                         <p:column  width="50">
@@ -73,10 +72,7 @@
                                             </f:facet>
                                             <h:outputText value="#{item.montantTotal}"/>
                                         </p:column>
-
-
-
-                                        <p:column width="90">
+                                        <p:column width="120">
                                             <f:facet name="header">
                                                 <h:outputText value="Action"/>
                                             </f:facet>
@@ -103,7 +99,7 @@
                                             <h:outputText value="#{item.tva}"/>
                                         </p:column>
 
-                                        <p:column width="300">
+                                        <p:column width="60">
                                             <f:facet name="header">
                                                 <h:outputText value="#{bundle.ListCommandeTitle_commentaire}"/>
                                             </f:facet>
@@ -117,7 +113,7 @@
                             <h:form id="CommandeItemListForm">
                                 <p:panel rendered="#{commandeController.selected.commandeItems.size()>0 and commandeController.booleanSwitch==1}" header="Lignes De commande">
                                     <p:dataTable id="datalist" value="#{commandeController.selected.commandeItems}" var="cItem" 
-                                                 scrollable="true" scrollHeight="170">
+                                                 scrollable="true" scrollHeight="120">
 
                                         <p:column>
                                             <f:facet name="header">
@@ -152,14 +148,16 @@
                                         </p:column>
 
                                         <p:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="ACTION"/> 
+                                             
+                                            <f:facet name="header" >
+                                                <h:outputText value="ACTION" /> 
                                             </f:facet>
                                             <p:commandButton title="Delete" icon="ui-icon-trash"  actionListener="#{commandeController.removeCommandeItem(cItem)}" 
                                                              update=":growl, :CommandeItemListForm:datalist,
                                                              :CommandeListForm:datalist">
                                                         <p:confirm header="Confirmation" message="Voullez vous vraiment supprimé cette ligne de commande?" icon="ui-icon-alert"/>
                                             </p:commandButton>
+                                                    
                                             <p:confirmDialog global="true">
                                                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
                                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>

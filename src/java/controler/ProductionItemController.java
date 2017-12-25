@@ -1,13 +1,20 @@
 package controler;
 
+import bean.Chain;
 import bean.Commande;
 import bean.CommandeItem;
+import bean.Heure;
 import bean.ProductionItem;
+import bean.Produit;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
+import controler.util.Message;
+import controler.util.MessageManager;
+import controler.util.SessionUtil;
 import service.ProductionItemFacade;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -20,6 +27,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import static org.primefaces.behavior.confirm.ConfirmBehavior.PropertyKeys.message;
 
 @Named("productionItemController")
 @SessionScoped
@@ -32,6 +40,20 @@ public class ProductionItemController implements Serializable {
     private @EJB
     service.CommandeItemFacade commandeItemFacade;
     private CommandeItem commandeItem;
+    private Commande commande;
+    private Heure heure;
+    private Chain chain;
+    private Produit produit;
+    private Date dateMin;
+    private Date dateMax;
+    
+     public void findByCriteres(){
+            items = ejbFacade.findByCriteres(commande, heure,  chain,  produit,  dateMin, dateMax);
+    }
+ 
+    public void  clearView(){
+    }
+    
 
     public void calcQteRestante(){
         selected.setQte(commandeItem.getQte().subtract(commandeItem.getQteRecu()));
@@ -133,7 +155,7 @@ public class ProductionItemController implements Serializable {
             }
         }
     }
-
+ 
     public ProductionItem getProductionItem(java.lang.Long id) {
         return getFacade().find(id);
     }

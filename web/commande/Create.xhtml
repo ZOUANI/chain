@@ -21,13 +21,14 @@
                         <p:inputText id="refPriffix" style="display:block;width:40px" value="#{commandeController.selected.referencePriffix}" title="#{bundle.Reference}" />
                         <p:inputText id="refIndex" style="display:block;width:40px" value="#{commandeController.selected.referenceIndex}" title="#{bundle.Reference}" />
                         <p:inputText id="refSuffix" style="display:block;width:40px" value="#{commandeController.selected.referenceSuffix}" title="#{bundle.Reference}" />
+                         <p:outputLabel style="display:block;width:40px"  value="#{bundle.CreateCommandeLabel_tva}" for="tva" />
+                        <p:inputText id="tva" value="#{commandeController.selected.tva}" title="#{bundle.CreateCommandeTitle_tva}" />
+
 
                         <p:commandButton  actionListener="#{commandeController.generateReferenceIndexCommande()}" 
                                           value="#{bundle.CreateCommandeTitle_generate}" update="refIndex" />
 
-                        <p:outputLabel style="display:block;width:40px"  value="#{bundle.CreateCommandeLabel_tva}" for="tva" />
-                        <p:inputText id="tva" value="#{commandeController.selected.tva}" title="#{bundle.CreateCommandeTitle_tva}" />
-
+                       
 
 
                     </p:panelGrid>

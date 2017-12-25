@@ -56,9 +56,9 @@ public class ProductionItemFacade extends AbstractFacade<ProductionItem> {
         return em.createQuery("SELECT pi FROM ProductionItem pi WHERE pi.commande.id=" + commande.getId()).getResultList();
     }
 
-    public List<Commande> findByCriteres(Commande commande, Heure heure, Chain chain, Produit produit, Date dateMin, Date dateMax) {
+    public List<ProductionItem> findByCriteres(Commande commande, Heure heure, Chain chain, Produit produit, Date dateMin, Date dateMax) {
         String requtte = "SELECT pi FROM ProductionItem pi WHERE 1=1 ";
-        if (commande != null && commande.getId() != null) {
+        if (commande!= null && commande.getId() != null) {
             requtte += " and pi.commande.id ='" + commande.getId() + "'";
         }
         if (heure != null && heure.getId() != null) {

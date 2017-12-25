@@ -28,22 +28,26 @@
                                 <p:menuitem value="#{bundle.Liste}" outcome="/client/List.xhtml" />
                             </p:submenu>
                           
-                        </p:submenu>                        
+                        </p:submenu>              
                        
                        
                         <p:submenu label="#{bundle.Commande}" icon="#">
 
-                            <p:submenu label="#{bundle.Commande}">
+                            <p:submenu label="#{bundle.Commande}" >
                                 <p:menuitem value="#{bundle.Liste}" outcome="/commande/List.xhtml" />
                                 <p:menuitem value="#{bundle.Ajout}" outcome="/commande/Create.xhtml" />
                             </p:submenu>
                            
-
                         </p:submenu>
-                       
+                        <p:submenu label="#{bundle.SuiviDeProduction}" icon="#">
 
-                    
-
+                            <p:submenu label="#{bundle.suivi}" >
+                                <p:menuitem value="#{bundle.Liste}" outcome="/productionItem/List.xhtml" />
+                             
+                            </p:submenu>
+                           
+                        </p:submenu>
+                        
                         <p:submenu label="#{bundle.Parametre}" icon="#">
 
                             <p:submenu label="#{bundle.Prduit}">
@@ -56,6 +60,13 @@
                             <p:submenu label="#{bundle.Famille}">
                                 <p:menuitem value="#{bundle.Liste}" outcome="/famille/List.xhtml" />
                             </p:submenu>
+                             <p:submenu label="#{bundle.Chain}">
+                                <p:menuitem value="#{bundle.Liste}" outcome="/chain/List.xhtml" />
+                            </p:submenu>
+                            <p:submenu label="#{bundle.Couleur}">
+                                <p:menuitem value="#{bundle.Liste}" outcome="/couleur/List.xhtml" />
+                            </p:submenu>
+                          
                           
 
                          
