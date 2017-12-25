@@ -11,6 +11,7 @@ import controler.util.JsfUtil.PersistAction;
 import service.ProductionItemFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -37,25 +38,27 @@ public class ProductionItemController implements Serializable {
     private ProductionItem selected;
     private @EJB
     service.CommandeItemFacade commandeItemFacade;
+    private @EJB
+    service.HeureFacade heureFacade;
     private CommandeItem commandeItem;
     private Commande commande;
     private Heure heure;
     private Chain chain;
     private Produit produit;
-    private Date dateMin;
-    private Date dateMax;
-    
-     public void findByCriteres(){
-            items = ejbFacade.findByCriteres(commande, heure,  chain,  produit,  dateMin, dateMax);
-    }
- 
-    public void  clearView(){
-    }
-    
+    private Date dateMin = new Date();
+    private Date dateMax = new Date();
 
-    public void calcQteRestante(){
+    public void findByCriteres() {
+        items = ejbFacade.findByCriteres(commande, heure, chain, produit, dateMin, dateMax);
+    }
+
+    public void clearView() {
+    }
+
+    public void calcQteRestante() {
         selected.setQte(commandeItem.getQte().subtract(commandeItem.getQteRecu()));
     }
+
     public void findCommadeItemsByIdCmd() {
         selected.getCommande().setCommandeItems(commandeItemFacade.findCommadeItemsByIdCmd(selected.getCommande()));
     }
@@ -64,6 +67,9 @@ public class ProductionItemController implements Serializable {
     }
 
     public ProductionItem getSelected() {
+        if (selected == null) {
+            selected = new ProductionItem();
+        }
         return selected;
     }
 
@@ -129,7 +135,7 @@ public class ProductionItemController implements Serializable {
             setEmbeddableKeys();
             try {
                 if (persistAction == PersistAction.CREATE) {
-                    getFacade().create(selected,commandeItem);
+                    getFacade().create(selected, commandeItem);
                 } else if (persistAction == PersistAction.UPDATE) {
                     getFacade().edit(selected);
                 } else {
@@ -153,7 +159,7 @@ public class ProductionItemController implements Serializable {
             }
         }
     }
- 
+
     public ProductionItem getProductionItem(java.lang.Long id) {
         return getFacade().find(id);
     }
@@ -164,6 +170,19 @@ public class ProductionItemController implements Serializable {
 
     public List<ProductionItem> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+    }
+
+    private void prepareMyProductionItems() {
+        List<Heure> heures = heureFacade.findAll();
+        myProductionItems = new ArrayList<>();
+        int i = 1;
+        for (Heure myHeure : heures) {
+            ProductionItem productionItem = new ProductionItem();
+            productionItem.setHeure(myHeure);
+            productionItem.setId(new Long(i));
+            myProductionItems.add(productionItem);
+            i++;
+        }
     }
 
     @FacesConverter(forClass = ProductionItem.class)
@@ -216,6 +235,7 @@ public class ProductionItemController implements Serializable {
     }
 
     public List<ProductionItem> getMyProductionItems() {
+        prepareMyProductionItems();
         return myProductionItems;
     }
 
@@ -278,6 +298,5 @@ public class ProductionItemController implements Serializable {
     public void setDateMax(Date dateMax) {
         this.dateMax = dateMax;
     }
-    
-    
+
 }
