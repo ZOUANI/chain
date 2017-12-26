@@ -14,7 +14,7 @@
 
         <ui:define name="body">
 
-           
+
             <h:form id="ProductionItemCreateMultipleForm">
                 <p:dataTable id="datalist" value="#{productionItemController.myProductionItems}" var="item"
                              selectionMode="single" selection="#{item}"
@@ -23,26 +23,27 @@
                              rows="10"
                              rowsPerPageTemplate="10,20,30,40,50"
                              >
+                    <p:ajax event="cellEdit" listener="#{productionItemController.onCellEdit}" update=":growl" />
 
 
                     <p:column  headerText="#{bundle.CreateProductionItemLabel_dateProduction}">
                         <p:cellEditor>
-                            <f:facet name="output"><p:outputLabel value="#{bundle.CreateProductionItemLabel_dateProduction}" for="dateProduction" /></f:facet>
+                            <f:facet name="output"><h:outputText value="#{bundle.CreateProductionItemLabel_dateProduction}" /></f:facet>
                             <f:facet name="input"> <p:calendar id="dateProduction" pattern="MM/dd/yyyy" value="#{item.dateProduction}" title="#{bundle.EditProductionItemTitle_dateProduction}"  showOn="button"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
                     <p:column headerText="#{bundle.CreateProductionItemLabel_commande}">
                         <p:cellEditor>
-                            <f:facet name="output"><p:outputLabel value="#{bundle.CreateProductionItemLabel_commande}" for="commande" />                 </f:facet>
+                            <f:facet name="output"><h:outputText value="#{bundle.CreateProductionItemLabel_commande}"  />                 </f:facet>
                             <f:facet name="input">
-                                <p:selectOneMenu id="commande" value="#{item.commande}" >
+                                <h:selectOneMenu id="commande" value="#{item.commande}" >
                                     <f:selectItem itemLabel="--SELECT--" itemValue="#{null}"></f:selectItem>
                                     <f:selectItems value="#{commandeController.itemsAvailableSelectOne}"
                                                    var="commandeItem"
                                                    itemValue="#{commandeItem}"/>
                                     <p:ajax process="commande" listener="#{productionItemController.findCommadeItemsByIdCmd()}"  update="commandeItem"></p:ajax>
-                                </p:selectOneMenu>
+                                </h:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -50,49 +51,49 @@
 
                     <p:column  headerText="#{bundle.CreateProductionItemLabel_heure}" >
                         <p:cellEditor>
-                            <f:facet name="output"> <p:outputLabel value="#{bundle.CreateProductionItemLabel_heure}" for="heure" /></f:facet>
+                            <f:facet name="output"> <h:outputText value="#{bundle.CreateProductionItemLabel_heure}"  /></f:facet>
                             <f:facet name="input">
-                                <p:selectOneMenu id="heure" value="#{item.heure}" >
+                                <h:selectOneMenu id="heure" value="#{item.heure}" >
                                     <f:selectItems value="#{heureController.itemsAvailableSelectOne}"
                                                    var="heureItem"
                                                    itemValue="#{heureItem}"/>
-                                </p:selectOneMenu>
+                                </h:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
 
                     <p:column  headerText="#{bundle.CreateProductionItemLabel_chain}">
                         <p:cellEditor>
-                            <f:facet name="output"> <p:outputLabel value="#{bundle.CreateProductionItemLabel_chain}" for="chain" /></f:facet>
+                            <f:facet name="output"> <h:outputText value="#{bundle.CreateProductionItemLabel_chain}" /></f:facet>
                             <f:facet name="input">
-                                <p:selectOneMenu id="chain" value="#{item.chain}" >
+                                <h:selectOneMenu id="chain" value="#{item.chain}" >
                                     <f:selectItems value="#{chainController.itemsAvailableSelectOne}"
                                                    var="chainItem"
                                                    itemValue="#{chainItem}"/>
-                                </p:selectOneMenu>
+                                </h:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
 
                     <p:column  headerText="#{bundle.CreateProductionItemLabel_produit}">
                         <p:cellEditor>
-                            <f:facet name="output"> <p:outputLabel value="#{bundle.CreateProductionItemLabel_produit}" for="commandeItem" /></f:facet>
+                            <f:facet name="output"> <h:outputText value="#{bundle.CreateProductionItemLabel_produit}"  /></f:facet>
                             <f:facet name="input">
-                                <p:selectOneMenu id="commandeItem" value="#{productionItemController.commandeItem}" >
+                                <h:selectOneMenu id="commandeItem" value="#{productionItemController.commandeItem}" >
                                     <f:selectItem itemLabel="--SELECT--" itemValue="#{null}"></f:selectItem>
                                     <f:selectItems value="#{item.commande.commandeItems}"
                                                    var="commandeItem"
-                                                   itemValue="#{commandeItem}" itemLabel="#{commandeItem.produit.libelle} (#{commandeItem.qteRecu} / #{commandeItem.qte})"
-                                                   itemDisabled="#{commandeItem.qteRecu ge commandeItem.qte}"/>
+                                                   itemValue="#{commandeItem}" itemLabel="#{commandeItem.produit.libelle} (#{commandeItem.qte} / #{commandeItem.qte})"
+                                                   itemDisabled="#{commandeItem.qte ge commandeItem.qte}"/>
                                     <p:ajax process="commandeItem" listener="#{productionItemController.calcQteRestante()}"  update="qte"></p:ajax>
-                                </p:selectOneMenu>
+                                </h:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
 
                     <p:column  headerText="#{bundle.CreateProductionItemLabel_qte}">
                         <p:cellEditor>
-                            <f:facet name="output"><p:outputLabel value="#{bundle.CreateProductionItemLabel_qte}" for="qte" /></f:facet>
+                            <f:facet name="output"><h:outputText value="#{bundle.CreateProductionItemLabel_qte}"  /></f:facet>
                             <f:facet name="input"><p:inputText id="qte" value="#{item.qte}" title="#{bundle.CreateProductionItemTitle_qte}" /></f:facet>
                         </p:cellEditor>
                     </p:column>
