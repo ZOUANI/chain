@@ -14,28 +14,7 @@
         </ui:define>
 
         <ui:define name="body">
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-12">
-                        <h:form id="FilterForm">
-                            <p:fieldset legend="Criteres de recherche" style="margin-bottom:15px" toggleable="true" toggleSpeed="200">
-
-                                <p:panelGrid columns="5">
-                                    <p:outputLabel value="#{bundle.DateCommandeMin}" style="display:block;width:60px" for="dateCommandeMin" />
-                                    <p:calendar id="dateCommandeMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateCommandeMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
-                                    <p:outputLabel value="#{bundle.DateCommandeMax}" style="display:block;width:60px" for="dateCommandeMax" />
-                                    <p:calendar id="dateCommandeMax" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateCommandeMax}" title="#{bundle.DateCommandeMax}"  showOn="button"/>
-                                    <p:outputLabel value="#{bundle.DateEcheanceMin}" style="display:block;width:85px" for="dateEcheanceMin" />
-                                    <p:calendar id="dateEcheanceMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
-                                    <p:outputLabel value="#{bundle.DateEcheanceMax}" style="display:block;width:85px" for="dateEcheanceMax" />
-                                    <p:calendar id="dateEcheanceMax" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMax}" title="#{bundle.DateCommandeMax}"  showOn="button"/>
-                                    <p:commandButton value="Valider" actionListener="#{commandeController.findByCriteres()}" update=":CommandeListForm:datalist"  />                                                       
-                                </p:panelGrid>
-                            </p:fieldset>   
-                        </h:form>
-
-                    </div>
-                </div>
-            </h:form>
+              
             <h:form id="ProductionItemListForm">
                 <p:panel header="#{bundle.ListProductionItemTitle}">
                     <p:dataTable id="datalist" value="#{productionItemController.items}" var="item"
@@ -95,17 +74,15 @@
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{productionItemController.prepareCreate}" update=":ProductionItemCreateForm" oncomplete="PF('ProductionItemCreateDialog').show()"/>
-                            <p:commandButton id="createMultipleButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{productionItemController.prepareCreate}" update=":ProductionItemCreateMultipleForm" oncomplete="PF('ProductionItemCreateMultipleDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":ProductionItemViewForm" oncomplete="PF('ProductionItemViewDialog').show()" disabled="#{empty productionItemController.selected}"/>
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ProductionItemEditForm" oncomplete="PF('ProductionItemEditDialog').show()" disabled="#{empty productionItemController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{productionItemController.destroy}" update=":growl,datalist" disabled="#{empty productionItemController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{productionItemController.destroy}" update="datalist" disabled="#{empty productionItemController.selected}"/>
                         </f:facet>
                     </p:dataTable>
                 </p:panel>
             </h:form>
 
             <ui:include src="Create.xhtml"/>
-            <ui:include src="CreateMultiple.xhtml"/>
             <ui:include src="Edit.xhtml"/>
             <ui:include src="View.xhtml"/>
         </ui:define>

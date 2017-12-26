@@ -25,6 +25,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.event.CellEditEvent;
 import service.CommandeItemFacade;
 
 @Named("productionItemController")
@@ -47,6 +48,15 @@ public class ProductionItemController implements Serializable {
     private Produit produit;
     private Date dateMin = new Date();
     private Date dateMax = new Date();
+    
+     public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+         
+        if(newValue != null && !newValue.equals(oldValue)) {
+            JsfUtil.addSuccessMessage("Cell Changedn Old: " + oldValue + ", New:" + newValue);
+        }
+    }
 
     public void findByCriteres() {
         items = ejbFacade.findByCriteres(commande, heure, chain, produit, dateMin, dateMax);
