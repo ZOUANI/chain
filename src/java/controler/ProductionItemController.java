@@ -49,10 +49,8 @@ public class ProductionItemController implements Serializable {
     private @EJB
     service.HeureFacade heureFacade;
     private CommandeItem commandeItem;
-    private Commande commande;
-    private Heure heure;
-    private Chain chain;
-    private Produit produit;
+   
+    private ProductionItem productionItemSearch;
     private Date dateMin = new Date();
     private Date dateMax = new Date();
 
@@ -75,7 +73,7 @@ public class ProductionItemController implements Serializable {
     }
 
     public void saveProductionItemHelpers() {
-         for (int i = 0; i < myProductionItems.size(); i++) {
+        for (int i = 0; i < myProductionItems.size(); i++) {
             ProductionItemHelper get = myProductionItems.get(i);
             System.out.println("ha index ==> " + i + " o ha ProductionItemHelper " + get);
         }
@@ -93,7 +91,7 @@ public class ProductionItemController implements Serializable {
     }
 
     public void findByCriteres() {
-        items = ejbFacade.findByCriteres(commande, heure, chain, produit, dateMin, dateMax);
+        items = ejbFacade.findByCriteres(productionItemSearch, dateMin, dateMax);
     }
 
     public void clearView() {
@@ -110,8 +108,6 @@ public class ProductionItemController implements Serializable {
     public void findCommadeItemsByIdCmdForSearch() {
         selectedSearchMultiple.getCommande().setCommandeItems(commandeItemFacade.findCommadeItemsByIdCmd(selectedSearchMultiple.getCommande()));
     }
-    
-     
 
     public ProductionItemController() {
     }
@@ -175,7 +171,7 @@ public class ProductionItemController implements Serializable {
 
     public List<ProductionItem> getItems() {
         if (items == null) {
-            items = getFacade().findAll();
+            findByCriteres();
         }
         return items;
     }
@@ -301,38 +297,7 @@ public class ProductionItemController implements Serializable {
         this.commandeItemFacade = commandeItemFacade;
     }
 
-    public Commande getCommande() {
-        return commande;
-    }
-
-    public void setCommande(Commande commande) {
-        this.commande = commande;
-    }
-
-    public Heure getHeure() {
-        return heure;
-    }
-
-    public void setHeure(Heure heure) {
-        this.heure = heure;
-    }
-
-    public Chain getChain() {
-        return chain;
-    }
-
-    public void setChain(Chain chain) {
-        this.chain = chain;
-    }
-
-    public Produit getProduit() {
-        return produit;
-    }
-
-    public void setProduit(Produit produit) {
-        this.produit = produit;
-    }
-
+  
     public Date getDateMin() {
         return dateMin;
     }
@@ -358,6 +323,17 @@ public class ProductionItemController implements Serializable {
 
     public void setSelectedSearchMultiple(ProductionItem selectedSearchMultiple) {
         this.selectedSearchMultiple = selectedSearchMultiple;
+    }
+
+    public ProductionItem getProductionItemSearch() {
+         if (productionItemSearch == null) {
+            productionItemSearch = new ProductionItem();
+        }
+        return productionItemSearch;
+    }
+
+    public void setProductionItemSearch(ProductionItem productionItemSearch) {
+        this.productionItemSearch = productionItemSearch;
     }
 
 }

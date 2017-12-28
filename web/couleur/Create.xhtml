@@ -16,9 +16,7 @@
                         <p:inputText id="nom" value="#{couleurController.selected.nom}" title="#{bundle.CreateCouleurTitle_nom}" />
                         <p:outputLabel value="#{bundle.CreateCouleurLabel_reference}" for="reference" />
                         <p:colorPicker id="reference" value="#{couleurController.selected.reference}"  />
-                        <p:outputLabel value="#{bundle.CreateCouleurLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{couleurController.selected.id}" title="#{bundle.CreateCouleurTitle_id}" />
-                    </p:panelGrid>
+                         </p:panelGrid>
                     <p:commandButton actionListener="#{couleurController.create}" value="#{bundle.Save}" update="display,:CouleurListForm:datalist,:growl" oncomplete="handleSubmit(args,'CouleurCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="CouleurCreateDialog.hide()"/>
                 </h:panelGroup>

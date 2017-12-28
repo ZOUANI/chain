@@ -101,11 +101,10 @@ public class CommandeController implements Serializable {
     public void findByCriteres(int deleted) {
         validateSerarchForm();
         if (message != null && message.getResultat() > 0) {
+            System.out.println("ha date comamnde min " + dateCommandeMin + " o ha max ==> " + dateCommandeMax + "||| echance min " + dateEcheanceMin + " o haaa max " + dateEcheanceMax);
             items = ejbFacade.findByCriteres(critereObj, 0, etatPaiement, etatReception, dateCommandeMin, dateCommandeMax, dateEcheanceMin, dateEcheanceMax);
             SessionUtil.setAttribute("listaCmd", items);
             selected = new Commande();
-        } else if (message.getResultat() < 0) {
-            MessageManager.showMessage(message);
         }
         clearView();
     }
@@ -164,7 +163,7 @@ public class CommandeController implements Serializable {
     }
 
     private void createCommandeItem(boolean commandeExist) {
-        CommandeItem clonedCommandeItem = commandeItemFacade.cloneCommandeItem(selected, commandItem, selectedProduit, selectedFamille,selectedCouleur);
+        CommandeItem clonedCommandeItem = commandeItemFacade.cloneCommandeItem(selected, commandItem, selectedProduit, selectedFamille, selectedCouleur);
         int position = produitFacade.findIndexOfProduitInCommandeItems(getSelected().getCommandeItems(), clonedCommandeItem.getProduit());
         if (position == -1) {
             getSelected().getCommandeItems().add(clonedCommandeItem);
@@ -388,7 +387,7 @@ public class CommandeController implements Serializable {
     public List<Commande> getItems() {
         SessionUtil.setAttribute("listaCmd", items); // a revoir rah deja kayena setAttribute f findByCriter
         if (items == null) {
-            items = getFacade().findAll(); // lahhhhhhhhhhhhhhhhhhhhhh a modifier
+            items = getFacade().findByCriteres(selected, etatReception, etatPaiement, etatReception, dateCommandeMin, dateCommandeMax, dateEcheanceMin, dateEcheanceMax);// lahhhhhhhhhhhhhhhhhhhhhh a modifier
         }
         return items;
     }

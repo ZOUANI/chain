@@ -19,14 +19,14 @@
                             <h:form id="FilterForm">
                                 <p:fieldset legend="Criteres de recherche" style="margin-bottom:15px" toggleable="true" toggleSpeed="200">
 
-                                    <p:panelGrid columns="6">
-                                        <p:outputLabel value="#{bundle.DateCommandeMin}" style="display:block;width:60px" for="dateCommandeMin" />
-                                        <p:calendar id="dateCommandeMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateCommandeMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
+                                    <p:panelGrid columns="9">
+                                        <p:outputLabel value="#{bundle.DateCommandeMin}" style="display:block;width:100px" for="dateCommandeMin" />
+                                        <p:calendar id="dateCommandeMin" style="display:block;width:180px" pattern="dd/MM/yyyy" value="#{commandeController.dateCommandeMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
                                         <p:outputLabel value="#{bundle.DateCommandeMax}" style="display:block;width:60px" for="dateCommandeMax" />
                                         <p:calendar id="dateCommandeMax" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateCommandeMax}" title="#{bundle.DateCommandeMax}"  showOn="button"/>
-                                        <p:outputLabel value="#{bundle.DateEcheanceMin}" style="display:block;width:85px" for="dateEcheanceMin" />
+                                        <p:outputLabel value="#{bundle.DateEcheanceMin}" style="display:block;width:60px" for="dateEcheanceMin" />
                                         <p:calendar id="dateEcheanceMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
-                                        <p:outputLabel value="#{bundle.DateEcheanceMax}" style="display:block;width:85px" for="dateEcheanceMax" />
+                                        <p:outputLabel value="#{bundle.DateEcheanceMax}" style="display:block;width:60px" for="dateEcheanceMax" />
                                         <p:calendar id="dateEcheanceMax" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMax}" title="#{bundle.DateCommandeMax}"  showOn="button"/>
                                         <p:commandButton value="Valider" actionListener="#{commandeController.findByCriteres(0)}" update=":CommandeListForm:datalist,:CommandeItemListForm,:growl"  />                                                       
                                     </p:panelGrid>
@@ -36,11 +36,11 @@
                         </div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-8">
-                            <h:form id="CommandeListForm">
+                        <div class="ui-grid-col-7">
+                            <h:form id="CommandeListForm" style="height: 80%">
                                 <p:panel header="#{bundle.ListCommandeTitle}" style="margin-top: 0">
                                     <p:dataTable id="datalist" value="#{commandeController.items}" var="item"
-                                                 scrollable="true" scrollHeight="120"
+                                                 scrollable="true" scrollHeight="300" tableStyle="table-layout:auto;height:30%;"
                                                  resizableColumns="true" style="margin-top: 0"
                                                  >
                                         <p:column  width="50">
@@ -72,7 +72,22 @@
                                             </f:facet>
                                             <h:outputText value="#{item.montantTotal}"/>
                                         </p:column>
-                                        <p:column width="120">
+                                       
+                                        <p:column width="20">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListCommandeTitle_tva}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.tva}"/>
+                                        </p:column>
+
+                                        <p:column width="60">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListCommandeTitle_commentaire}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.commentaire}"/>
+                                        </p:column>
+                                        
+                                         <p:column width="120">
                                             <f:facet name="header">
                                                 <h:outputText value="Action"/>
                                             </f:facet>
@@ -92,28 +107,15 @@
                                             </p:confirmDialog>
                                         </p:column>
 
-                                        <p:column width="20">
-                                            <f:facet name="header">
-                                                <h:outputText value="#{bundle.ListCommandeTitle_tva}"/>
-                                            </f:facet>
-                                            <h:outputText value="#{item.tva}"/>
-                                        </p:column>
-
-                                        <p:column width="60">
-                                            <f:facet name="header">
-                                                <h:outputText value="#{bundle.ListCommandeTitle_commentaire}"/>
-                                            </f:facet>
-                                            <h:outputText value="#{item.commentaire}"/>
-                                        </p:column>
                                     </p:dataTable>
                                 </p:panel>
                             </h:form>
                         </div>
-                        <div class="ui-grid-col-4">
-                            <h:form id="CommandeItemListForm">
-                                <p:panel rendered="#{commandeController.selected.commandeItems.size()>0 and commandeController.booleanSwitch==1}" header="Lignes De commande">
+                        <div class="ui-grid-col-5">
+                            <h:form id="CommandeItemListForm"  >
+                                <p:panel  rendered="#{commandeController.selected.commandeItems.size()>0 and commandeController.booleanSwitch==1}" header="Lignes De commande">
                                     <p:dataTable id="datalist" value="#{commandeController.selected.commandeItems}" var="cItem" 
-                                                 scrollable="true" scrollHeight="120">
+                                                 scrollable="true" scrollHeight="300" tableStyle="table-layout:auto;height:30%;">
 
                                         <p:column>
                                             <f:facet name="header">
@@ -215,18 +217,7 @@
                                             </f:facet>
                                             <h:outputText value="#{item.qte}"/>
                                         </p:column>
-                                        <p:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="#{bundle.ListProductionItemTitle_commande}"/>
-                                            </f:facet>
-                                            <h:outputText value="#{item.commande.reference}"/>
-                                        </p:column>
-                                        <p:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="#{bundle.ListProductionItemTitle_id}"/>
-                                            </f:facet>
-                                            <h:outputText value="#{item.id}"/>
-                                        </p:column>
+                                       
 
                                     </p:dataTable>
                                 </p:panel>

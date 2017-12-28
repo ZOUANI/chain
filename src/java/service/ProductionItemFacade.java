@@ -13,6 +13,7 @@ import bean.ProductionItem;
 import bean.ProductionItemHelper;
 import bean.Produit;
 import controler.util.DateUtil;
+import controler.util.SearchUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,28 +73,23 @@ public class ProductionItemFacade extends AbstractFacade<ProductionItem> {
         return em.createQuery("SELECT pi FROM ProductionItem pi WHERE pi.commande.id=" + commande.getId()).getResultList();
     }
 
-    public List<ProductionItem> findByCriteres(Commande commande, Heure heure, Chain chain, Produit produit, Date dateMin, Date dateMax) {
+    public List<ProductionItem> findByCriteres(ProductionItem productionItem, Date dateMin, Date dateMax) {
         String requtte = "SELECT pi FROM ProductionItem pi WHERE 1=1 ";
-        if (commande != null && commande.getId() != null) {
-            requtte += " and pi.commande.id ='" + commande.getId() + "'";
+        if (productionItem != null) {
+            if (productionItem.getCommande() != null) {
+                requtte += SearchUtil.addConstraint("pi", "commande.id", "=", productionItem.getCommande().getId());
+            }
+            if (productionItem.getHeure() != null) {
+                requtte += SearchUtil.addConstraint("pi", "heure.id", "=", productionItem.getHeure().getId());
+            }
+            if (productionItem.getChain() != null) {
+                requtte += SearchUtil.addConstraint("pi", "chain.id", "=", productionItem.getChain().getId());
+            }
+            if (productionItem.getProduit() != null) {
+                requtte += SearchUtil.addConstraint("pi", "produit.id", "=", productionItem.getProduit().getId());
+            }
         }
-        if (heure != null && heure.getId() != null) {
-            requtte += " and pi.heure.id ='" + heure.getId() + "'";
-        }
-        if (chain != null && chain.getId() != null) {
-            requtte += " and pi.chain.id ='" + chain.getId() + "'";
-        }
-        if (produit != null && produit.getId() != null) {
-            requtte += " and pi.produit.id ='" + produit.getId() + "'";
-        }
-
-        if (dateMax != null) {
-            requtte += " and pi.dateProduction <= '" + DateUtil.getSqlDate(dateMax) + "'";
-        }
-        if (dateMin != null) {
-            requtte += " and pi.dateProduction >= '" + DateUtil.getSqlDate(dateMin) + "'";
-        }
-
+        requtte += SearchUtil.addConstraintMinMaxDate("pi", "dateProduction", dateMin, dateMax);
         System.out.println("Requette =" + requtte);
         return em.createQuery(requtte).getResultList();
 

@@ -14,9 +14,7 @@
                     <p:panelGrid columns="2" rendered="#{chainController.selected != null}">
                         <h:outputText value="#{bundle.ViewChainLabel_reference}"/>
                         <h:outputText value="#{chainController.selected.reference}" title="#{bundle.ViewChainTitle_reference}"/>
-                        <h:outputText value="#{bundle.ViewChainLabel_id}"/>
-                        <h:outputText value="#{chainController.selected.id}" title="#{bundle.ViewChainTitle_id}"/>
-                    </p:panelGrid>
+                        </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="ChainViewDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

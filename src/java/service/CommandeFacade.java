@@ -9,6 +9,7 @@ import bean.Commande;
 
 import bean.User;
 import controler.util.DateUtil;
+import controler.util.SearchUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,27 +72,21 @@ public class CommandeFacade extends AbstractFacade<Commande> {
 
     public List<Commande> findByCriteres(Commande commande, int deleted, int etatPaiement, int etatReception, Date dateCommandeMin, Date dateCommandeMax, Date dateEcheanceMin, Date dateEcheanceMax) {
         String requtte = "SELECT c FROM Commande c WHERE 1=1 ";
-        if (commande.getReference() != null && !commande.getReference().equals("")) {
-            requtte += " and c.reference ='" + commande.getReference() + "'";
-        }
-        if (deleted != -1) {
-            requtte += " and c.supprimer =" + deleted;
-        }
+                   System.out.println("ha date comamnde min "+dateCommandeMin+" o ha max ==> "+dateCommandeMax+ "||| echance min "+dateEcheanceMin+" o haaa max "+dateEcheanceMax);
 
-        if (dateCommandeMax != null) {
-            requtte += " and c.dateCommande <= '" + DateUtil.getSqlDate(dateCommandeMax) + "'";
-        }
-        if (dateCommandeMin != null) {
-            requtte += " and c.dateCommande >= '" + DateUtil.getSqlDate(dateCommandeMin) + "'";
-        }
-        if (dateEcheanceMax != null) {
-            requtte += " and c.dateEchance <= '" + DateUtil.getSqlDate(dateEcheanceMax) + "'";
-        }
-        if (dateEcheanceMin != null) {
-            requtte += " and c.dateEchance >= '" + DateUtil.getSqlDate(dateEcheanceMin) + "'";
-        }
-        System.out.println("Requette =" + requtte);
-        return em.createQuery(requtte).getResultList();
+            if (commande != null && commande.getReference() != null && !commande.getReference().equals("")) {
+                requtte += " and c.reference ='" + commande.getReference() + "'";
+            }
+            if (deleted != -1) {
+                requtte += " and c.supprimer =" + deleted;
+            }
+            requtte += SearchUtil.addConstraintMinMaxDate("c", "dateEchance", dateEcheanceMin, dateEcheanceMax);
+            requtte += SearchUtil.addConstraintMinMaxDate("c", "dateCommande", dateCommandeMin, dateCommandeMax);
+
+        List<Commande> res= em.createQuery(requtte).getResultList();
+                System.out.println("Requette =" + requtte);
+        System.out.println("res = " + res);
+        return res;
 
     }
 

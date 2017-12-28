@@ -14,28 +14,51 @@
         </ui:define>
 
         <ui:define name="body">
-              <div class="ui-grid-row">
-                    <div class="ui-grid-col-12">
-                        <h:form id="FilterForm">
-                            <p:fieldset legend="Criteres de recherche" style="margin-bottom:15px" toggleable="true" toggleSpeed="200">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <h:form id="FilterForm">
+                        <p:fieldset legend="Criteres de recherche" style="margin-bottom:15px" toggleable="true" toggleSpeed="200">
 
-                                <p:panelGrid columns="5">
-                                    <p:outputLabel value="#{bundle.DateCommandeMin}" style="display:block;width:60px" for="dateCommandeMin" />
-                                    <p:calendar id="dateCommandeMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateCommandeMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
-                                    <p:outputLabel value="#{bundle.DateCommandeMax}" style="display:block;width:60px" for="dateCommandeMax" />
-                                    <p:calendar id="dateCommandeMax" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateCommandeMax}" title="#{bundle.DateCommandeMax}"  showOn="button"/>
-                                    <p:outputLabel value="#{bundle.DateEcheanceMin}" style="display:block;width:85px" for="dateEcheanceMin" />
-                                    <p:calendar id="dateEcheanceMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
-                                    <p:outputLabel value="#{bundle.DateEcheanceMax}" style="display:block;width:85px" for="dateEcheanceMax" />
-                                    <p:calendar id="dateEcheanceMax" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMax}" title="#{bundle.DateCommandeMax}"  showOn="button"/>
-                                    <p:commandButton value="Valider" actionListener="#{productionItemController.findByCriteres()}" update=":ProductionItemListForm:datalist"  />                                                       
-                               
-							   </p:panelGrid>
-                            </p:fieldset>   
-                        </h:form>
+                            <p:panelGrid columns="11">
+                                <p:outputLabel value="#{bundle.DateCommandeMin}" style="display:block;width:60px" for="dateCommandeMin" />
+                                <p:calendar id="dateCommandeMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{productionItemController.dateMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
+                                <p:outputLabel value="#{bundle.DateCommandeMax}" style="display:block;width:60px" for="dateCommandeMax" />
+                                <p:calendar id="dateCommandeMax" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{productionItemController.dateMax}" title="#{bundle.DateCommandeMax}"  showOn="button"/>
 
-                    </div>
-                </div>  
+                                <p:outputLabel value="#{bundle.CreateProductionItemLabel_heure}" for="heure" />
+                                <p:selectOneMenu id="heure" value="#{productionItemController.productionItemSearch.heure}" >
+                                    <f:selectItem itemLabel="--SELECT--" itemValue="#{null}"></f:selectItem>
+
+                                    <f:selectItems value="#{heureController.itemsAvailableSelectOne}"
+                                                   var="heureItem"
+                                                   itemValue="#{heureItem}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="#{bundle.CreateProductionItemLabel_chain}" for="chain" />
+                                <p:selectOneMenu id="chain" value="#{productionItemController.productionItemSearch.chain}" >
+                                    <f:selectItem itemLabel="--SELECT--" itemValue="#{null}"></f:selectItem>
+
+                                    <f:selectItems value="#{chainController.itemsAvailableSelectOne}"
+                                                   var="chainItem"
+                                                   itemValue="#{chainItem}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="#{bundle.CreateProductionItemLabel_produit}" for="commandeItem" />
+                                <p:selectOneMenu id="commandeItem" value="#{productionItemController.productionItemSearch.produit}" >
+                                    <f:selectItem itemLabel="--SELECT--" itemValue="#{null}"></f:selectItem>
+                                    <f:selectItems value="#{produitController.itemsAvailableSelectOne}"
+                                                   var="produitItem"
+                                                   itemValue="#{produitItem}" itemLabel="#{produitItem.libelle}" />
+                                </p:selectOneMenu>
+
+                                <p:commandButton value="Valider" actionListener="#{productionItemController.findByCriteres()}" update=":ProductionItemListForm:datalist"  />                                                       
+
+                            </p:panelGrid>
+                        </p:fieldset>   
+                    </h:form>
+
+                </div>
+            </div>  
             <h:form id="ProductionItemListForm">
                 <p:panel header="#{bundle.ListProductionItemTitle}">
                     <p:dataTable id="datalist" value="#{productionItemController.items}" var="item"

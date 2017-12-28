@@ -16,11 +16,13 @@
             <h:form id="CommandeCreateForm">
 
                 <p:fieldset legend="Infos Commande" style="margin-bottom:20px">
-                    <p:panelGrid columns="6">
+                    <p:panelGrid columns="9">
                         <p:outputLabel value="#{bundle.Reference}" for="refPriffix" style="display:block;width:15px"/>
                         <p:inputText id="refPriffix" style="display:block;width:40px" value="#{commandeController.selected.referencePriffix}" title="#{bundle.Reference}" />
                         <p:inputText id="refIndex" style="display:block;width:40px" value="#{commandeController.selected.referenceIndex}" title="#{bundle.Reference}" />
                         <p:inputText id="refSuffix" style="display:block;width:40px" value="#{commandeController.selected.referenceSuffix}" title="#{bundle.Reference}" />
+                        <p:commandButton  actionListener="#{commandeController.generateReferenceIndexCommande()}" 
+                                          value="#{bundle.CreateCommandeTitle_generate}" update="refIndex" />
                         <p:outputLabel style="display:block;width:40px"  value="#{bundle.CreateCommandeLabel_tva}" for="tva" />
                         <p:inputText id="tva" value="#{commandeController.selected.tva}" title="#{bundle.CreateCommandeTitle_tva}" />
                         <p:outputLabel style="display:block;width:70px"  value="#{bundle.CreateCommandeLabel_commentaire}" for="commentaire" />
@@ -29,13 +31,11 @@
                         <p:calendar id="dateCommande" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.selected.dateCommande}" title="#{bundle.DateCommande}"  showOn="button"/>
                         <p:outputLabel value="#{bundle.DateEcheance}" style="display:block;width:85px" for="dateEcheance" />
                         <p:calendar id="dateEcheance" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.selected.dateEchance}" title="#{bundle.DateEcheance}"  showOn="button"/>
-                        <p:commandButton  actionListener="#{commandeController.generateReferenceIndexCommande()}" 
-                                          value="#{bundle.CreateCommandeTitle_generate}" update="refIndex" />
-
+                      
                     </p:panelGrid>
                 </p:fieldset>
                 <p:fieldset legend="Infos Ligne de Commande" style="margin-bottom:20px">
-                    <p:panelGrid columns="6">
+                    <p:panelGrid columns="11">
                         <p:outputLabel value="#{bundle.Famille}" for="famille" />
                         <p:selectOneMenu id="famille" value="#{commandeController.selectedFamille}" >
                             <f:selectItem itemValue="#{null}" itemLabel="--Select--"/>
@@ -70,9 +70,7 @@
                         <p:commandButton actionListener="#{commandeController.createCommandeItem}"
                                          value="Valider" 
                                          update=":CommandeItemListForm:datalist,:growl" />
-                        <p:commandButton actionListener="#{commandeController.createCommande()}"
-                                         value="Finir"
-                                         update=":growl,:CommandeItemListForm:datalist,:CommandeCreateForm" />
+                        
                     </p:panelGrid>
                 </p:fieldset>
             </h:form>
@@ -130,7 +128,10 @@
 
                         <f:facet name="footer">
                             <h:outputText value="#{bundle.CreateCommandeLabel_montantTotal}  "/>
-                            <h:outputText id="montantTotal" value="#{commandeController.selected.montantTotal}"/>
+                            <h:outputText id="montantTotal" value="#{commandeController.selected.montantTotal}    "/>
+                            <p:commandButton actionListener="#{commandeController.createCommande()}"
+                                         value="Finir"
+                                         update=":growl,:CommandeItemListForm:datalist,:CommandeCreateForm" />
                         </f:facet>
                     </p:dataTable>
                 </h:form>

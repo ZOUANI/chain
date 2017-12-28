@@ -14,9 +14,7 @@
                     <p:panelGrid columns="2" rendered="#{chainController.selected != null}">
                         <p:outputLabel value="#{bundle.CreateChainLabel_reference}" for="reference" />
                         <p:inputText id="reference" value="#{chainController.selected.reference}" title="#{bundle.CreateChainTitle_reference}" />
-                        <p:outputLabel value="#{bundle.CreateChainLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{chainController.selected.id}" title="#{bundle.CreateChainTitle_id}" />
-                    </p:panelGrid>
+                        </p:panelGrid>
                     <p:commandButton actionListener="#{chainController.create}" value="#{bundle.Save}" update="display,:ChainListForm:datalist,:growl" oncomplete="handleSubmit(args,'ChainCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="ChainCreateDialog.hide()"/>
                 </h:panelGroup>

@@ -259,5 +259,7 @@ public class Commande implements Serializable {
     public void setReferenceIndex(Long referenceIndex) {
         this.referenceIndex = referenceIndex;
     }
+    
+    
 
 }

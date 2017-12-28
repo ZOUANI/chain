@@ -7,51 +7,236 @@
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
-
-
         <ui:define name="title">
-            <h:outputText value="#{bundle.ListChainTitle}"></h:outputText>
+            <h:outputText value="#{bundle.ListCommandeTitle}"></h:outputText>
         </ui:define>
 
         <ui:define name="body">
-            <h:form id="ChainListForm">
-                <p:panel header="#{bundle.ListChainTitle}">
-                    <p:dataTable id="datalist" value="#{chainController.items}" var="item"
-                                 selectionMode="single" selection="#{chainController.selected}"
-                                 paginator="true"
-                                 rowKey="#{item.id}"
-                                 rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50"
-                                 >
+            <f:view>
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-12">
+                            <h:form id="FilterForm">
+                                <p:fieldset legend="Criteres de recherche" style="margin-bottom:15px" toggleable="true" toggleSpeed="200">
 
-                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
-                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+                                    <p:panelGrid columns="5">
+                                        <p:outputLabel value="#{bundle.DateCommandeMin}" style="display:block;width:60px" for="dateCommandeMin" />
+                                        <p:calendar id="dateCommandeMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateCommandeMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
+                                        <p:outputLabel value="#{bundle.DateCommandeMax}" style="display:block;width:60px" for="dateCommandeMax" />
+                                        <p:calendar id="dateCommandeMax" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateCommandeMax}" title="#{bundle.DateCommandeMax}"  showOn="button"/>
+                                        <p:outputLabel value="#{bundle.DateEcheanceMin}" style="display:block;width:85px" for="dateEcheanceMin" />
+                                        <p:calendar id="dateEcheanceMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
+                                        <p:outputLabel value="#{bundle.DateEcheanceMax}" style="display:block;width:85px" for="dateEcheanceMax" />
+                                        <p:calendar id="dateEcheanceMax" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMax}" title="#{bundle.DateCommandeMax}"  showOn="button"/>
+                                        <p:commandButton value="Valider" actionListener="#{commandeController.findByCriteres(0)}" update=":CommandeListForm:datalist,:CommandeItemListForm,:growl"  />                                                       
+                                    </p:panelGrid>
+                                </p:fieldset>   
+                            </h:form>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListChainTitle_reference}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.reference}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListChainTitle_id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
-                        <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{chainController.prepareCreate}" update=":ChainCreateForm" oncomplete="PF('ChainCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":ChainViewForm" oncomplete="PF('ChainViewDialog').show()" disabled="#{empty chainController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ChainEditForm" oncomplete="PF('ChainEditDialog').show()" disabled="#{empty chainController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{chainController.destroy}" update=":growl,datalist" disabled="#{empty chainController.selected}"/>
-                        </f:facet>
-                    </p:dataTable>
-                </p:panel>
-            </h:form>
+                        </div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-8">
+                            <h:form id="CommandeListForm">
+                                <p:panel header="#{bundle.ListCommandeTitle}" style="margin-top: 0">
+                                    <p:dataTable id="datalist" value="#{commandeController.items}" var="item"
+                                                 scrollable="true" scrollHeight="120"
+                                                 resizableColumns="true" style="margin-top: 0"
+                                                 >
+                                        <p:column  width="50">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.Reference}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.reference}"/>
+                                        </p:column>
+                                        <p:column width="55">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListCommandeTitle_dateCommande}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.dateCommande}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column width="55">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListCommandeTitle_dateEchance}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.dateEchance}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </p:column>
 
-            <ui:include src="Create.xhtml"/>
+                                        <p:column width="50">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListCommandeTitle_montantTotal}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.montantTotal}"/>
+                                        </p:column>
+                                        <p:column width="120">
+                                            <f:facet name="header">
+                                                <h:outputText value="Action"/>
+                                            </f:facet>
+                                            <p:commandButton title="Detail Commande" icon="fa-ellipsis-h"  actionListener="#{commandeController.findCommadeItemsByIdCmd(item)}" update=":CommandeItemListForm, :ProductionItemListForm:datalist" />
+
+                                            <p:commandButton title="Update Commande" icon="ui-icon-pencil"  actionListener="#{commandeController.update(item)}" 
+                                                             update=":CommandeEditForm" oncomplete="PF('CommandeEditDialog').show()"/>
+                                            <p:commandButton title="Delete Commande" icon="ui-icon-trash"  actionListener="#{commandeController.destroy(item)}" 
+                                                             update=":growl, :CommandeItemListForm:datalist,
+
+                                                             :CommandeListForm:datalist">
+                                                        <p:confirm header="Confirmation" message="#{'Voullez vous vraiment supprimer la commande: '.concat(item.reference)}" icon="ui-icon-alert"/>
+                                            </p:commandButton>
+                                            <p:confirmDialog global="true">
+                                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                                            </p:confirmDialog>
+                                        </p:column>
+
+                                        <p:column width="20">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListCommandeTitle_tva}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.tva}"/>
+                                        </p:column>
+
+                                        <p:column width="60">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListCommandeTitle_commentaire}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.commentaire}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                            </h:form>
+                        </div>
+                        <div class="ui-grid-col-4">
+                            <h:form id="CommandeItemListForm">
+                                <p:panel rendered="#{commandeController.selected.commandeItems.size()>0 and commandeController.booleanSwitch==1}" header="Lignes De commande">
+                                    <p:dataTable id="datalist" value="#{commandeController.selected.commandeItems}" var="cItem" 
+                                                 scrollable="true" scrollHeight="120">
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListCommandeItemTitle_produit}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{cItem.produit.libelle}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListCommandeItemTitle_prix}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{cItem.prix}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListCommandeItemTitle_qte}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{cItem.qte}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListCommandeItemTitle_qteRecu}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{cItem.qteRecu}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Couleur"/>
+                                            </f:facet>
+                                            <h:outputText value="#{cItem.couleur.nom}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                             
+                                            <f:facet name="header" >
+                                                <h:outputText value="ACTION" /> 
+                                            </f:facet>
+                                            <p:commandButton title="Delete" icon="ui-icon-trash"  actionListener="#{commandeController.removeCommandeItem(cItem)}" 
+                                                             update=":growl, :CommandeItemListForm:datalist,
+                                                             :CommandeListForm:datalist">
+                                                        <p:confirm header="Confirmation" message="Voullez vous vraiment supprimé cette ligne de commande?" icon="ui-icon-alert"/>
+                                            </p:commandButton>
+                                                    
+                                            <p:confirmDialog global="true">
+                                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                                            </p:confirmDialog>        
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </p:panel>
+                            </h:form>
+
+                        </div>
+                    </div>
+
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-12">
+                            <h:form id="ProductionItemListForm">
+                                <p:panel header="#{bundle.ListProductionItemTitle}">
+                                    <p:dataTable id="datalist" value="#{commandeController.selected.productionItems}" var="item"
+                                                 selectionMode="single" selection="#{productionItemController.selected}"
+                                                 paginator="true"
+                                                 rowKey="#{item.id}"
+                                                 rows="10"
+                                                 rowsPerPageTemplate="10,20,30,40,50"
+                                                 >
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListProductionItemTitle_produit}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.produit.libelle}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListProductionItemTitle_dateProduction}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.dateProduction}">
+                                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListProductionItemTitle_chain}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.chain.reference}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListProductionItemTitle_heure}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.heure.reference}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListProductionItemTitle_qte}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.qte}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListProductionItemTitle_commande}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.commande.reference}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{bundle.ListProductionItemTitle_id}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.id}"/>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </p:panel>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </f:view>
             <ui:include src="Edit.xhtml"/>
-            <ui:include src="View.xhtml"/>
+            <ui:include src="CommandeItemCreateDialog.xhtml"/>
         </ui:define>
     </ui:composition>
 
