@@ -9,6 +9,7 @@ import bean.Commande;
 
 import bean.User;
 import controler.util.DateUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -38,6 +39,13 @@ public class CommandeFacade extends AbstractFacade<Commande> {
             return 1;
         }
         return -1;
+    }
+
+    public Commande findByReference(String reference) {
+        if (reference == null || reference.equals("")) {
+            return null;
+        }
+        return loadSingleResult("SELECT cmd FROM Commande cmd WHERE cmd.reference='" + reference + "'");
     }
 
     private Long generateId() {

@@ -21,24 +21,21 @@
                                  paginator="true"
                                  rowKey="#{item.id}"
                                  rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50"
-                                 >
+                                 rowsPerPageTemplate="10,20,30,40,50" editable="true" editMode="cell" widgetVar="celluniteMesures">
+                                 
+                        <p:ajax event="cellEdit" listener="#{uniteMesureController.onCellEdit}" update=":growl" />
 
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListUniteMesureTitle_nom}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.nom}"/>
+                        <p:column headerText="Nom">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{item.nom}" /></f:facet>
+                                <f:facet name="input"><p:inputText id="modelInput" value="#{item.nom}" style="width:100%"/></f:facet>
+                            </p:cellEditor>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListUniteMesureTitle_id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
+
+
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{uniteMesureController.prepareCreate}" update=":UniteMesureCreateForm" oncomplete="PF('UniteMesureCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":UniteMesureViewForm" oncomplete="PF('UniteMesureViewDialog').show()" disabled="#{empty uniteMesureController.selected}"/>
@@ -46,6 +43,10 @@
                             <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{uniteMesureController.destroy}" update=":growl,datalist" disabled="#{empty uniteMesureController.selected}"/>
                         </f:facet>
                     </p:dataTable>
+                    <p:contextMenu for="datalist" widgetVar="cMenu">   
+                        <p:menuitem value="Edit Cell" icon="ui-icon-search" onclick="PF('celluniteMesures').showCellEditor();return false;"/>  
+                        <p:menuitem value="Hide Menu" icon="ui-icon-close" onclick="PF('cMenu').hide()"/>  
+                    </p:contextMenu> 
                 </p:panel>
             </h:form>
 

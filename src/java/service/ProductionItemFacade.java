@@ -10,8 +10,10 @@ import bean.Commande;
 import bean.CommandeItem;
 import bean.Heure;
 import bean.ProductionItem;
+import bean.ProductionItemHelper;
 import bean.Produit;
 import controler.util.DateUtil;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +33,14 @@ public class ProductionItemFacade extends AbstractFacade<ProductionItem> {
     private EntityManager em;
     @EJB
     CommandeItemFacade commandeItemFacade;
+    @EJB
+    private service.ProduitFacade produitFacade;
+    @EJB
+    private service.ChainFacade chainFacade;
+    @EJB
+    private service.HeureFacade heureFacade;
+    @EJB
+    private service.CommandeFacade commandeFacade;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -48,6 +58,12 @@ public class ProductionItemFacade extends AbstractFacade<ProductionItem> {
         super.create(selected);
     }
 
+    @Override
+    public void create(ProductionItem selected) {
+        CommandeItem commandeItem = commandeItemFacade.findCommandeItemByProduit(selected.getCommande(), selected.getProduit());
+        create(selected, commandeItem);
+    }
+
     public List<ProductionItem> findByCommande(Commande commande) {
         if (commande == null || commande.getId() == null) {
             return new ArrayList();
@@ -58,7 +74,7 @@ public class ProductionItemFacade extends AbstractFacade<ProductionItem> {
 
     public List<ProductionItem> findByCriteres(Commande commande, Heure heure, Chain chain, Produit produit, Date dateMin, Date dateMax) {
         String requtte = "SELECT pi FROM ProductionItem pi WHERE 1=1 ";
-        if (commande!= null && commande.getId() != null) {
+        if (commande != null && commande.getId() != null) {
             requtte += " and pi.commande.id ='" + commande.getId() + "'";
         }
         if (heure != null && heure.getId() != null) {
@@ -81,6 +97,69 @@ public class ProductionItemFacade extends AbstractFacade<ProductionItem> {
         System.out.println("Requette =" + requtte);
         return em.createQuery(requtte).getResultList();
 
+    }
+
+    public void injectHelper(ProductionItem selectedSearchMultiple, List<ProductionItemHelper> myProductionItems) {
+        for (ProductionItemHelper myProductionItem : myProductionItems) {
+            myProductionItem.setIdCommande(selectedSearchMultiple.getCommande().getId());
+            myProductionItem.setReferenceCommande(selectedSearchMultiple.getCommande().getReference());
+            myProductionItem.setProduits(produitFacade.extractProduitReferenceFromCommandeItems(selectedSearchMultiple.getCommande()));
+            myProductionItem.setIdChain(selectedSearchMultiple.getChain().getId());
+            myProductionItem.setReferenceChain(selectedSearchMultiple.getChain().getReference());
+            myProductionItem.setDate(selectedSearchMultiple.getDateProduction());
+            myProductionItem.setIdProduit(selectedSearchMultiple.getProduit().getId());
+            myProductionItem.setReferenceProduit(selectedSearchMultiple.getProduit().getReference());
+        }
+    }
+
+    public int saveProductionItemHelpers(List<ProductionItemHelper> myProductionItems) {
+        saveProductionItems(transformHelper(myProductionItems));
+        return 1;
+    }
+
+    private List<ProductionItem> transformHelper(List<ProductionItemHelper> myProductionItems) {
+
+        List<ProductionItem> productionItems = new ArrayList();
+        int i = 0;
+        for (ProductionItemHelper productionItemHelper : myProductionItems) {
+            ProductionItem productionItem = new ProductionItem();
+            boolean valid = validateProductionItemHelper(productionItemHelper);
+            System.out.println("validation pour i=" + i + " est ============== " + valid);
+            if (valid) {
+                productionItem.setCommande(commandeFacade.findByReference(productionItemHelper.getReferenceCommande()));
+                productionItem.setChain(chainFacade.findByReference(productionItemHelper.getReferenceChain()));
+                productionItem.setHeure(heureFacade.findByReference(productionItemHelper.getReferenceHeure()));
+                // chang to findByRef
+                productionItem.setProduit(produitFacade.find(3L));
+                productionItem.setDateProduction(productionItemHelper.getDate());
+                productionItem.setQte(new BigDecimal(productionItemHelper.getQte()));
+                productionItems.add(productionItem);
+            }
+            i++;
+        }
+        return productionItems;
+    }
+
+    private int saveProductionItems(List<ProductionItem> productionItems) {
+        for (ProductionItem productionItem : productionItems) {
+            create(productionItem);
+        }
+        return 1;
+    }
+
+    private boolean validateProductionItemHelper(ProductionItemHelper productionItemHelper) {
+        return productionItemHelper.getDate() != null && productionItemHelper.getQte() != null
+                && productionItemHelper.getIdCommande() != null
+                //&& productionItemHelper.getIdProduit() != null
+                && productionItemHelper.getIdHeure() != null && productionItemHelper.getIdChain() != null;
+    }
+
+    public boolean validateProductionItemHelperLigne(ProductionItemHelper productionItemHelper) {
+        return (validateProductionItemHelper(productionItemHelper))
+                || (productionItemHelper.getDate() == null && productionItemHelper.getQte() == null
+                && productionItemHelper.getIdCommande() == null
+                && productionItemHelper.getIdProduit() == null && productionItemHelper.getIdHeure() == null
+                && productionItemHelper.getIdChain() == null);
     }
 
 }

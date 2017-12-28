@@ -5,6 +5,7 @@
  */
 package service;
 
+import bean.Commande;
 import bean.CommandeItem;
 import bean.Famille;
 import bean.Produit;
@@ -28,7 +29,15 @@ public class ProduitFacade extends AbstractFacade<Produit> {
     private EntityManager em;
     private @EJB
     FamilleFacade familleFacade;
+    private @EJB
+    CommandeItemFacade commandeItemFacade;
 
+       public Produit findByReference(String reference) {
+       if (reference == null || reference.equals("")) {
+            return null;
+        }
+        return loadSingleResult("SELECT p FROM Produit p WHERE p.reference='" + reference + "'");
+    }
     private int updateQteGlobalProduit(Produit produit, BigDecimal qte, boolean isSave, boolean checkMode) {
         int res = 0;
         if (isSave) {
@@ -79,12 +88,25 @@ public class ProduitFacade extends AbstractFacade<Produit> {
         return myProduits;
     }
 
-    private List<Produit> extractProduitFromCommandeItems(List<CommandeItem> commandeItems) {
+    public List<Produit> extractProduitFromCommandeItems(List<CommandeItem> commandeItems) {
         List<Produit> produits = new ArrayList<>();
         for (CommandeItem commandeItem : commandeItems) {
             produits.add(commandeItem.getProduit());
         }
         return produits;
+    }
+    public List<String> extractProduitReferenceFromCommandeItems(List<CommandeItem> commandeItems) {
+        List<String> produits = new ArrayList<>();
+        for (CommandeItem commandeItem : commandeItems) {
+            produits.add(commandeItem.getProduit().getReference());
+        }
+        return produits;
+    }
+    public List<Produit> extractProduitFromCommandeItems(Commande commande) {
+       return extractProduitFromCommandeItems(commandeItemFacade.findCommadeItemsByReferenceCmd(commande));
+    }
+    public List<String> extractProduitReferenceFromCommandeItems(Commande commande) {
+       return extractProduitReferenceFromCommandeItems(commandeItemFacade.findCommadeItemsByReferenceCmd(commande));
     }
 
     private int findIndexOfProduit(List<Produit> produits, Produit produit) {

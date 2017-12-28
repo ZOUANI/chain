@@ -6,6 +6,7 @@
 package service;
 
 import bean.Chain;
+import bean.Produit;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,6 +24,13 @@ public class ChainFacade extends AbstractFacade<Chain> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+       public Chain findByReference(String reference ) {
+        if (reference == null || reference.equals("")) {
+            return null;
+        }
+        return loadSingleResult("SELECT p FROM Chain p WHERE p.reference='" + reference + "'");
     }
 
     public ChainFacade() {

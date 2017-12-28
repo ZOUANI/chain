@@ -119,13 +119,21 @@ public class CommandeItemFacade extends AbstractFacade<CommandeItem> {
     }
 
     public CommandeItem findCommandeItemByProduit(Commande commande, Produit produit) {
+        System.out.println("======================= rekette ==> SELECT cmditem FROM CommandeItem cmditem WHERE"
+                + " cmditem.produit.id=" + produit.getId()
+                + " AND cmditem.commande.id=" + commande.getId());
         return (CommandeItem) em.createQuery("SELECT cmditem FROM CommandeItem cmditem WHERE"
                 + " cmditem.produit.id=" + produit.getId()
                 + " AND cmditem.commande.id=" + commande.getId()).getSingleResult();
     }
 
+    public List<CommandeItem> findCommadeItemsByReferenceCmd(Commande commande) {
+        return findCommadeItemsByIdCmd(commandeFacade.findByReference(commande.getReference()));
+    }
+
     public List<CommandeItem> findCommadeItemsByIdCmd(Commande commande) {
         if (commande == null || commande.getId() == null) {
+            System.out.println("l commande nulllll f findCommadeItemsByIdCmd");
             return new ArrayList();
         }
         System.out.println("SELECT cmdi FROM CommandeItem cmdi WHERE cmdi.commande.id=" + commande.getId());

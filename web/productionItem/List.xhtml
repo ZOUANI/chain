@@ -28,7 +28,7 @@
                                     <p:calendar id="dateEcheanceMin" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMin}" title="#{bundle.DateCommandeMin}"  showOn="button"/>
                                     <p:outputLabel value="#{bundle.DateEcheanceMax}" style="display:block;width:85px" for="dateEcheanceMax" />
                                     <p:calendar id="dateEcheanceMax" style="display:block;width:190px" pattern="dd/MM/yyyy" value="#{commandeController.dateEcheanceMax}" title="#{bundle.DateCommandeMax}"  showOn="button"/>
-                                    <p:commandButton value="Valider" actionListener="#{commandeController.findByCriteres()}" update=":ProductionItemListForm:datalist"  />                                                       
+                                    <p:commandButton value="Valider" actionListener="#{productionItemController.findByCriteres()}" update=":ProductionItemListForm:datalist"  />                                                       
                                
 							   </p:panelGrid>
                             </p:fieldset>   

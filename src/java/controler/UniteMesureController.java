@@ -10,24 +10,46 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB; import javax.faces.bean.ManagedBean;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
 import javax.ejb.EJBException;
-import javax.faces.bean.SessionScoped;  
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 
-
-@ManagedBean(name ="uniteMesureController")
+@ManagedBean(name = "uniteMesureController")
 @SessionScoped
 public class UniteMesureController implements Serializable {
 
-
-    @EJB private service.UniteMesureFacade ejbFacade;
+    @EJB
+    private service.UniteMesureFacade ejbFacade;
     private List<UniteMesure> items = null;
     private UniteMesure selected;
+
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+
+        if (newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Car Edited", ((UniteMesure) event.getObject()).getId()+"");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edit Cancelled", ((UniteMesure) event.getObject()).getId()+"");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
 
     public UniteMesureController() {
     }
@@ -122,7 +144,7 @@ public class UniteMesureController implements Serializable {
         return getFacade().findAll();
     }
 
-    @FacesConverter(forClass=UniteMesure.class)
+    @FacesConverter(forClass = UniteMesure.class)
     public static class UniteMesureControllerConverter implements Converter {
 
         @Override
@@ -130,7 +152,7 @@ public class UniteMesureController implements Serializable {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            UniteMesureController controller = (UniteMesureController)facesContext.getApplication().getELResolver().
+            UniteMesureController controller = (UniteMesureController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "uniteMesureController");
             return controller.getUniteMesure(getKey(value));
         }

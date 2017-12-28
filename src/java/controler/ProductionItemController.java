@@ -5,6 +5,7 @@ import bean.Commande;
 import bean.CommandeItem;
 import bean.Heure;
 import bean.ProductionItem;
+import bean.ProductionItemHelper;
 import bean.Produit;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
@@ -25,7 +26,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 import service.CommandeItemFacade;
 
 @Named("productionItemController")
@@ -34,9 +37,13 @@ public class ProductionItemController implements Serializable {
 
     @EJB
     private service.ProductionItemFacade ejbFacade;
+    @EJB
+    private service.ProduitFacade produitFacade;
     private List<ProductionItem> items = null;
-    private List<ProductionItem> myProductionItems = null;
+    private List<ProductionItemHelper> myProductionItems = null;
+    //private List<Produit> produits = null;
     private ProductionItem selected;
+    private ProductionItem selectedSearchMultiple;
     private @EJB
     service.CommandeItemFacade commandeItemFacade;
     private @EJB
@@ -48,14 +55,41 @@ public class ProductionItemController implements Serializable {
     private Produit produit;
     private Date dateMin = new Date();
     private Date dateMax = new Date();
-    
-     public void onCellEdit(CellEditEvent event) {
+
+    public void onCellEdit(CellEditEvent event) {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
-         
-        if(newValue != null && !newValue.equals(oldValue)) {
-            JsfUtil.addSuccessMessage("Cell Changedn Old: " + oldValue + ", New:" + newValue);
+        if (newValue != null && !newValue.equals(oldValue) && event.getColumn().getColumnKey().endsWith("commandeRow")) {
+            Commande myCommande = new Commande();
+            myCommande.setReference(event.getNewValue() + "");
+            myProductionItems.get(event.getRowIndex()).setProduits(produitFacade.extractProduitReferenceFromCommandeItems(myCommande));
         }
+        for (int i = 0; i < myProductionItems.size(); i++) {
+            ProductionItemHelper get = myProductionItems.get(i);
+            System.out.println("ha index ==> " + i + " o ha ProductionItemHelper " + get);
+        }
+    }
+
+    public void initialisermyProductionItem() {
+        ejbFacade.injectHelper(selectedSearchMultiple, myProductionItems);
+    }
+
+    public void saveProductionItemHelpers() {
+         for (int i = 0; i < myProductionItems.size(); i++) {
+            ProductionItemHelper get = myProductionItems.get(i);
+            System.out.println("ha index ==> " + i + " o ha ProductionItemHelper " + get);
+        }
+        ejbFacade.saveProductionItemHelpers(myProductionItems);
+        prepareMyProductionItems();
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        JsfUtil.addSuccessMessage("Cell Changedn ");
+
     }
 
     public void findByCriteres() {
@@ -72,6 +106,12 @@ public class ProductionItemController implements Serializable {
     public void findCommadeItemsByIdCmd() {
         selected.getCommande().setCommandeItems(commandeItemFacade.findCommadeItemsByIdCmd(selected.getCommande()));
     }
+
+    public void findCommadeItemsByIdCmdForSearch() {
+        selectedSearchMultiple.getCommande().setCommandeItems(commandeItemFacade.findCommadeItemsByIdCmd(selectedSearchMultiple.getCommande()));
+    }
+    
+     
 
     public ProductionItemController() {
     }
@@ -182,13 +222,14 @@ public class ProductionItemController implements Serializable {
         return getFacade().findAll();
     }
 
-    private void prepareMyProductionItems() {
+    public void prepareMyProductionItems() {
         List<Heure> heures = heureFacade.findAll();
         myProductionItems = new ArrayList<>();
         int i = 1;
         for (Heure myHeure : heures) {
-            ProductionItem productionItem = new ProductionItem();
-            productionItem.setHeure(myHeure);
+            ProductionItemHelper productionItem = new ProductionItemHelper();
+            productionItem.setIdHeure(myHeure.getId());
+            productionItem.setReferenceHeure(myHeure.getReference());
             productionItem.setId(new Long(i));
             myProductionItems.add(productionItem);
             i++;
@@ -244,12 +285,11 @@ public class ProductionItemController implements Serializable {
         this.ejbFacade = ejbFacade;
     }
 
-    public List<ProductionItem> getMyProductionItems() {
-        prepareMyProductionItems();
+    public List<ProductionItemHelper> getMyProductionItems() {
         return myProductionItems;
     }
 
-    public void setMyProductionItems(List<ProductionItem> myProductionItems) {
+    public void setMyProductionItems(List<ProductionItemHelper> myProductionItems) {
         this.myProductionItems = myProductionItems;
     }
 
@@ -307,6 +347,17 @@ public class ProductionItemController implements Serializable {
 
     public void setDateMax(Date dateMax) {
         this.dateMax = dateMax;
+    }
+
+    public ProductionItem getSelectedSearchMultiple() {
+        if (selectedSearchMultiple == null) {
+            selectedSearchMultiple = new ProductionItem();
+        }
+        return selectedSearchMultiple;
+    }
+
+    public void setSelectedSearchMultiple(ProductionItem selectedSearchMultiple) {
+        this.selectedSearchMultiple = selectedSearchMultiple;
     }
 
 }
