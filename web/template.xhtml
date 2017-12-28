@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
-        <title><ui:insert name="title">Default Title</ui:insert></title>
+        <title><ui:insert name="title">Bienvenue</ui:insert></title>
         <h:outputStylesheet library="css" name="jsfcrud.css"/>
         <h:outputScript library="js" name="jsfcrud.js"/>
     </h:head>
@@ -16,63 +16,31 @@
 
         <p:growl id="growl" life="3000" />
 
-             
+
         <p:layout fullPage="true">
-            <p:layoutUnit position="north" header="#{bundle.AppName}">
-
+            <p:layoutUnit position ="north" header="#{bundle.AppName}"  resizable="true" size="100" minSize="40" maxSize="200">
                 <h:form>
-                    <p:growl id="messages"/>
+                    <p:growl id="messages" />
                     <p:menubar>                        
-                        <p:submenu label="#{bundle.MesCollaborateurs}" icon="/resources/ico/coll_32.png">
-                            <p:submenu label="#{bundle.Clients}">
-                                <p:menuitem value="#{bundle.Liste}" outcome="/client/List.xhtml" />
-                            </p:submenu>
-                          
+                        <p:submenu label="#{bundle.MesCollaborateurs}" icon=" ui-icon-contact"  >
+                            <p:menuitem value="#{bundle.Clients}" outcome="/client/List.xhtml" />
                         </p:submenu>              
-                       
-                       
-                        <p:submenu label="#{bundle.Commande}" icon="#">
-
-                            <p:submenu label="#{bundle.Commande}" >
-                                <p:menuitem value="#{bundle.Liste}" outcome="/commande/List.xhtml" />
-                                <p:menuitem value="#{bundle.Ajout}" outcome="/commande/Create.xhtml" />
-                            </p:submenu>
-                           
+                        <p:submenu label="#{bundle.Commande}" icon="ui-icon-suitcase">
+                            <p:menuitem value="#{bundle.Liste}" outcome="/commande/List.xhtml" />
+                            <p:menuitem value="#{bundle.Ajout}" outcome="/commande/Create.xhtml" />
                         </p:submenu>
-                        <p:submenu label="#{bundle.SuiviDeProduction}" icon="#">
-
-                            <p:submenu label="#{bundle.suivi}" >
-                                <p:menuitem value="#{bundle.Liste}" outcome="/productionItem/List.xhtml" />
-                             
-                            </p:submenu>
-                           
+                        <p:submenu label="#{bundle.SuiviDeProduction}" icon="ui-icon-plusthick">                        
+                            <p:menuitem value="#{bundle.suivi}" outcome="/productionItem/List.xhtml" />
                         </p:submenu>
-                        
-                        <p:submenu label="#{bundle.Parametre}" icon="#">
-
-                            <p:submenu label="#{bundle.Prduit}">
-                                <p:menuitem value="#{bundle.Liste}" outcome="/produit/List.xhtml" />
-                            </p:submenu>
-                            <p:submenu label="#{bundle.uniteMesure}">
-                                <p:menuitem value="#{bundle.Liste}" outcome="/uniteMesure/List.xhtml" />
-                            </p:submenu>
-
-                            <p:submenu label="#{bundle.Famille}">
-                                <p:menuitem value="#{bundle.Liste}" outcome="/famille/List.xhtml" />
-                            </p:submenu>
-                             <p:submenu label="#{bundle.Chain}">
-                                <p:menuitem value="#{bundle.Liste}" outcome="/chain/List.xhtml" />
-                            </p:submenu>
-                            <p:submenu label="#{bundle.Couleur}">
-                                <p:menuitem value="#{bundle.Liste}" outcome="/couleur/List.xhtml" />
-                            </p:submenu>
-                          
-                          
-
-                         
+                        <p:submenu label="#{bundle.Parametre}" icon="ui-icon-wrench">                         
+                            <p:menuitem   value="#{bundle.Prduit}" outcome="/produit/List.xhtml" />                          
+                            <p:menuitem value="#{bundle.uniteMesure}" outcome="/uniteMesure/List.xhtml" />                    
+                            <p:menuitem value="#{bundle.Famille}" outcome="/famille/List.xhtml" />
+                            <p:menuitem value="#{bundle.Chain}" outcome="/chain/List.xhtml" />                          
+                            <p:menuitem value="#{bundle.Couleur}" outcome="/couleur/List.xhtml" />                           
                         </p:submenu>
-                        <f:facet name="options">
-                            <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
+                        <f:facet name="options" >
+                            <p:commandButton type="button" value="Se Déconnecter " icon="ui-icon-locked" />
                         </f:facet>
 
                     </p:menubar>
