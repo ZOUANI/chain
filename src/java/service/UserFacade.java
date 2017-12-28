@@ -6,6 +6,7 @@
 package service;
 
 import bean.User;
+import controler.util.SessionUtil;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,6 +40,7 @@ public class UserFacade extends AbstractFacade<User> {
             }
         }
     }
+    
 
     @Override
     protected EntityManager getEntityManager() {
@@ -48,5 +50,5 @@ public class UserFacade extends AbstractFacade<User> {
     public UserFacade() {
         super(User.class);
     }
-
+       
 }

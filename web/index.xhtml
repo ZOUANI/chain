@@ -5,14 +5,22 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Authentification</title>
         <h:outputStylesheet name="css/jsfcrud.css"/>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
+        <h:outputStylesheet name="css/loginStyle.css"/>
+        <link rel="shortcut icon" href="../resources/image/img4AC.png" type="image/png" sizes="16x16"/>
     </h:head>
-    <h:body>
-         <p:fieldset legend="Authetification" style="margin:200px">
+    <h:body class = "bodyLogin" >
+        <img src="resources/image/img4AC.png"/>
+        <h3 style="text-align: center">Connectez-vous à votre compte</h3>
+        <div class="login-card">
+            <img src="resources/image/user.png" style="border-radius: 100%; width: 100px; height: auto"/><br/>
+         <p:fieldset legend="Authetification" style="margin:10px">
+             
         <h:form>
               <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
-            <h:panelGrid columns="2" cellpadding="5">
+            <h:panelGrid columns="2" cellpadding="5" styleClass="align-center">
                 <h:outputLabel for="username" value="Username:" />
                 <p:inputText id="username" value="#{userController.selected.login}" required="true" label="username" />
 
@@ -20,11 +28,15 @@
                 <p:password id="password" value="#{userController.selected.password}" required="true" label="password" />
 
                 <f:facet name="footer">
-                    <p:commandButton value="Login" update="growl" action="#{userController.seConnnecter()}"/>
+                    <p:commandButton value="Connexion" update="growl" action="#{userController.seConnnecter()}"/>
                 </f:facet>  
             </h:panelGrid>
         </h:form>
+            
+        
+             
          </p:fieldset>
+             </div>
     </h:body>
 </html>
 

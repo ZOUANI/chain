@@ -38,6 +38,7 @@ public class ClientController implements Serializable {
         }
         return selected;
     }
+   
 
     public void setSelected(Client selected) {
         this.selected = selected;

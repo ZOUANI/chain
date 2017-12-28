@@ -6,6 +6,7 @@ import controler.util.JsfUtil.PersistAction;
 import controler.util.Message;
 import controler.util.MessageManager;
 import controler.util.SessionUtil;
+import java.io.IOException;
 import service.UserFacade;
 
 import java.io.Serializable;
@@ -59,6 +60,10 @@ public class UserController implements Serializable {
         validteConnexionForm(res);
         return null;
     }
+    
+      
+
+    
 
     public User getSelected() {
         if (selected == null) {

@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+
+
+    <h:head>
+
+        <title>Menu principale</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <!--meta http-equiv="refresh" content="#{userController.getTimout()};../index.xhtml" /-->
+        <link href="../resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="../resources/css/loginStyle.css" rel="stylesheet"/>
+        <link href="../resources/css/jsfcrud.css" rel="stylesheet"/>
+        <link href="../resources/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet"/>
+        <script src="../resources/js/jsfcrud.js" language="javaScript" />
+        <link rel="shortcut icon" href="../resources/image/logo.png" type="image/png" sizes="16x16"/>
+
+    </h:head>
+
+    <!--style >
+        body {
+            color:black;
+            background-color:white;
+            background-image:url(image/fondtr.jpg);
+        }
+    
+        .imagelink {
+            overflow:hidden;
+            -webkit-border-radius:50px;
+            -moz-border-radius:50px;
+            border-radius:50px;
+            width:90px;
+            height:90px;
+        }
+    
+        img {
+            width:20px;
+            margin:20px;
+        }
+    
+            
+        #p_panelid{
+            border: 0px;
+        }
+    </style-->
+
+    <div class="ui-grid-row" style="background: url(../resources/image/header3.jpg) no-repeat;background-size: cover;">
+        <div class="ui-grid-col-12" style="text-align: right; margin-top: 2px; padding-right: 10px">
+            <h:form>
+                Bienvenue : <b>#{userController.currentUser.login}</b>&nbsp;
+                |&nbsp;<p:commandLink value="Se Déconnecter" action="#{userController.seDeConnnecter()}"/>
+            </h:form>
+        </div>
+        <img src="../resources/image/logo-1.png" style="width: 120px; height: auto"/>
+        <h3 style="text-align: center; color: white; text-shadow: 2px 2px 2px black; font-weight: bold">#{communeController.currentCommune}</h3>
+    </div>
+
+    <div class="ui-grid ui-grid-responsive">
+
+        <div class="container" style="margin-top: 10px">
+            <div class="row">
+                <div class="col-md-12" >
+
+                    <p:panel  class="col-md-3" style="border: 0px" >
+                        <a class="menu-link" href="../client/List.xhtml">
+                            <div class="menu-card" >
+                                <h1><span class="fa fa-user-md"></span></h1>
+                                <h1>Client</h1>
+                            </div>
+                        </a>
+                    </p:panel>
+
+                    <p:panel class="col-md-3" style="border: 0px" >
+                        <a class="menu-link" href="../commande/List.xhtml">
+                            <div class="menu-card">
+                                <h1><span class="fa-3x fa fa-database"></span></h1>
+                                <h1>Commande</h1>
+                            </div>
+                        </a>
+                    </p:panel>
+                    <p:panel class="col-md-3" style="border: 0px" >
+                        <a class="menu-link" href="../productionItem/List.xhtml">
+                            <div class="menu-card">
+                                <h1><span class="fa fa-plus-square-o"></span></h1>
+                                <h1>Suivi de production</h1>
+                            </div>
+                        </a>
+                    </p:panel>
+                    <!--p:panel class="col-md-3" style="border: 0px" >
+                        <a class="menu-link" href="../chaine/List.xhtml">
+                            <div class="menu-card">
+                                <h1><span class="fa fa-wrench"></span></h1>
+                                <h1>Parametre</h1>
+                            </div>
+                        </a>
+                    </p:panel-->
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</html>
